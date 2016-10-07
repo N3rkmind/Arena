@@ -44,7 +44,7 @@ public class PlayerMotor : MonoBehaviour {
 
 	void Update () 
 	{
-        VerifyActiveDevice();
+        isKeyboardControl = VerifyKeyboardUsage();
     }
 
     void FixedUpdate ()
@@ -202,15 +202,15 @@ public class PlayerMotor : MonoBehaviour {
         }
     }
 
-    private void VerifyActiveDevice()
+    public bool VerifyKeyboardUsage()
     {
         if (InControl.InputManager.ActiveDevice.Name == NO_JOYSTICK_CONNECTED)
         {
-            isKeyboardControl = true;
+            return true;
         }
         else
         {
-            isKeyboardControl = false;
+            return false;
         }
     }
     #endregion
