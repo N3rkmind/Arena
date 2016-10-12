@@ -9,6 +9,7 @@ public class Atk_Melee : MonoBehaviour {
     private const float DEFAULT_HIT_DURATION = 0.5f;
 
     // PRIVATE
+    private PlayerMotor playerMotor;
     private MeshCollider MeleeTrigger;
 
     private float hitDurationTimer;
@@ -16,6 +17,7 @@ public class Atk_Melee : MonoBehaviour {
 
     private bool canHit;
     private bool isHitting;
+    private bool isKeyboardControl;
 
     // PUBLIC
 
@@ -24,6 +26,7 @@ public class Atk_Melee : MonoBehaviour {
     #region UNITY METHODE
     void Awake ()
     {
+        playerMotor = gameObject.GetComponent<PlayerMotor>();
         MeleeTrigger = gameObject.transform.FindChild("Melee_Trigger").GetComponent<MeshCollider>();
     }
 
@@ -35,6 +38,9 @@ public class Atk_Melee : MonoBehaviour {
 
 	void Update ()
     {
+        // Verify if listening to keyboard/mouse input or joystick input.
+        isKeyboardControl = playerMotor.VerifyKeyboardUsage();
+
         VerifyInput();
 
         TryUpdateAllTimer();
@@ -44,13 +50,29 @@ public class Atk_Melee : MonoBehaviour {
 
     private void VerifyInput()
     {
-        // Primary mouse button
-        if (Input.GetMouseButton(0))
+        if (isKeyboardControl)
         {
-            if (canHit)
+            // Primary mouse button
+            if (Input.GetMouseButton(0))
             {
-                Hit();
+                TryHit();
             }
+        }
+        else
+        {
+            if (InControl.InputManager.ActiveDevice.LeftTrigger || 
+                InControl.InputManager.ActiveDevice.RightTrigger)
+            {
+                TryHit();
+            }
+        }
+    }
+
+    private void TryHit()
+    {
+        if (canHit)
+        {
+            Hit();
         }
     }
 
