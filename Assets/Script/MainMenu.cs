@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour 
 {
@@ -36,5 +37,10 @@ public class MainMenu : MonoBehaviour
 		options.SetActive (false);
 		leaderboard.SetActive (false);
 		achievement.SetActive (true);
+	}
+
+	public void PlayGame()
+	{
+		SceneManager.LoadScene ("Gym_Achievement");
 	}
 }
